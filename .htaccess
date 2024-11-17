@@ -1,0 +1,21 @@
+RewriteEngine On
+RewriteBase /Contact_book_app/
+
+# Handle directory trailing slashes
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Redirect root to login.php
+RewriteRule ^$ login.php [L]
+
+# API endpoints
+RewriteRule ^auth/login$ auth/login.php [L]
+RewriteRule ^auth/register$ auth/register.php [L]
+
+# Error document
+ErrorDocument 404 /Contact_book_app/error404.html
+
+# Protect direct access to auth directory
+RewriteCond %{REQUEST_URI} ^/Contact_book_app/auth/
+RewriteCond %{REQUEST_URI} !^/Contact_book_app/auth/(login|register)\.php$
+RewriteRule ^ - [F,L]
